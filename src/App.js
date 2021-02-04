@@ -1,39 +1,91 @@
 import PersonTable from "./PersonTable";
-import { useState } from "react";
+import LanguageContext, { languages } from "./LanguageContext";
+import { useState, useEffect } from "react";
+
+const studentId = 610631100;
 
 function App() {
-  const studentId = 610631100;
-  const data = [
-    {
-      name: "Bob",
-      gender: "male",
-      age: "50"
-    },
-    {
-      name: "Alice",
-      gender: "male",
-      age: "20"
-    },
-    {
-      name: "Chayanin Suatap " + studentId,
-      gender: "male",
-      age: "25"
-    }
-  ];
-  const [id, setId] = useState(studentId);
-  return (
-    <div class="ml-2">
-      <h3 class="title is-3">Person List</h3>
-      {data.map((x) => (
-        <PersonTable {...x} key={x.name} />
-      ))}
+  const [inputName, setInputName] = useState("");
+  const [inputGender, setInputGender] = useState("");
+  const [inputAge, setInputAge] = useState("");
 
-      <h3 class="title is-3">ID Counter</h3>
-      <p>{id}</p>
-      <button onClick={() => setId(id - 1)}>-</button>
-      <button onClick={() => setId(studentId)}>reset</button>
-      <button onClick={() => setId(id + 1)}>+</button>
-    </div>
+  useEffect(() => {
+    const persons = localStorage.getItem("persons");
+    if (!persons) add("Chayanin Suatap " + studentId, "Male", "25");
+    else setPersons(JSON.parse(persons));
+  }, []);
+
+  const [persons, setPersons] = useState([]);
+
+  function add(name, gender, age) {
+    setPersons([
+      ...persons,
+      {
+        name,
+        gender,
+        age
+      }
+    ]);
+    //localStorage.setItem('persons', JSON.stringify(persons))
+  }
+
+  return (
+    <LanguageContext.Provider value={languages.thai}>
+      <div className="card" style={{ width: 400 }}>
+        <div className="card-content">
+          <p className="is-4 title has-text-centered">Add Person</p>
+          <div className="field">
+            <label className="label">Name</label>
+            <p className="control">
+              <input
+                className="input"
+                type="text"
+                placeholder="e.q John Smith"
+                onChange={(e) => setInputName(e.target.value)}
+              ></input>
+            </p>
+          </div>
+
+          <div className="field">
+            <label className="label">Gender</label>
+            <p className="control">
+              <input
+                className="input"
+                type="text"
+                placeholder="e.q Male"
+                onChange={(e) => setInputGender(e.target.value)}
+              ></input>
+            </p>
+          </div>
+
+          <div className="field">
+            <label className="label">Age</label>
+            <p className="control">
+              <input
+                className="input"
+                type="text"
+                placeholder="e.q Age"
+                onChange={(e) => setInputAge(e.target.value)}
+              ></input>
+            </p>
+          </div>
+
+          <button
+            className="button is-primary is-fullwidth"
+            onClick={() => add(inputName, inputGender, inputAge)}
+          >
+            Submit
+          </button>
+
+          <div className="mb-4"></div>
+
+          <p className="is-4 title has-text-centered">Person List</p>
+          {persons.map((x, i) => (
+            <PersonTable {...x} key={i} />
+          ))}
+        </div>
+      </div>
+    </LanguageContext.Provider>
   );
 }
 
