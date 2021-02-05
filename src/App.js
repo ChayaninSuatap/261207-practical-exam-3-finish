@@ -18,20 +18,21 @@ function App() {
 
   //add new person
   function add(name, gender, age) {
-    const newPersons = [...persons,
-    {
-      name,
-      gender,
-      age
-    }]
-    setPersons(newPersons)
-    localStorage.setItem('persons', JSON.stringify(newPersons))
+    const newPersons = [
+      ...persons,
+      {
+        name,
+        gender,
+        age
+      }
+    ];
+    setPersons(newPersons);
+    localStorage.setItem("persons", JSON.stringify(newPersons));
   }
 
   return (
     <div className="card" style={{ width: 400 }}>
       <div className="card-content">
-
         <p className="is-4 title has-text-centered">Add Person</p>
         <div className="field">
           <label className="label">Name</label>
@@ -45,20 +46,23 @@ function App() {
 
         <div className="field">
           <label className="label">Gender</label>
-          <input
+          <select
             className="input"
             type="text"
             placeholder="e.q Male"
             onChange={(e) => setInputGender(e.target.value)}
-          ></input>
+          >
+            <option>Male</option>
+            <option>Female</option>
+          </select>
         </div>
 
         <div className="field">
           <label className="label">Age</label>
           <input
             className="input"
-            type="text"
-            placeholder="e.q Age"
+            type="number"
+            placeholder="e.q 30"
             onChange={(e) => setInputAge(e.target.value)}
           ></input>
         </div>
@@ -68,7 +72,7 @@ function App() {
           onClick={() => add(inputName, inputGender, inputAge)}
         >
           Submit
-          </button>
+        </button>
 
         <div className="mb-4"></div>
 
