@@ -1,8 +1,6 @@
 import PersonTable from "./PersonTable";
 import { useState, useEffect } from "react";
 
-const studentId = 610631100;
-
 function App() {
   const [inputName, setInputName] = useState("");
   const [inputGender, setInputGender] = useState("");
@@ -12,8 +10,7 @@ function App() {
   //load locationStorage
   useEffect(() => {
     const persons = localStorage.getItem("persons");
-    if (!persons) add("Chayanin Suatap " + studentId, "Male", "25");
-    else setPersons(JSON.parse(persons));
+    if (persons) setPersons(JSON.parse(persons));
   }, []);
 
   //add new person
@@ -49,9 +46,13 @@ function App() {
           <select
             className="input"
             type="text"
-            placeholder="e.q Male"
+            placeholder="Please select .."
             onChange={(e) => setInputGender(e.target.value)}
           >
+            <option value="" disabled selected hidden>
+              {" "}
+              -- Select Gender --
+            </option>
             <option>Male</option>
             <option>Female</option>
           </select>
@@ -80,6 +81,8 @@ function App() {
         {persons.map((x, i) => (
           <PersonTable {...x} key={i} />
         ))}
+
+        <p>Chayanin Suatap 610631100</p>
       </div>
     </div>
   );
